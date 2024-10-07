@@ -4,10 +4,7 @@ const pageSize = 30; // Limit articles per request
 let curSelectedNav = null;
 
 // Fetch news on page load
-window.addEventListener("load", () => {
-    fetchNews("India");
-    fetchLatestUpdatedNews(); // Fetch latest updated news on page load
-});
+window.addEventListener("load", () => fetchNews("India"));
 
 // Get the date 10 days ago
 function getLast10DaysDate() {
@@ -44,55 +41,6 @@ async function fetchNews(query, page = 1) {
         console.error("Failed to fetch news:", error);
         alert("Unable to fetch news. Please try again later.");
     }
-}
-
-// Fetch the latest updated news articles
-async function fetchLatestUpdatedNews() {
-    const last10DaysDate = getLast10DaysDate();
-    const query = 'latest'; // Placeholder for your latest news query
-
-    try {
-        const res = await fetch(`${url}${query}&pageSize=${pageSize}&from=${last10DaysDate}&sortBy=publishedAt&language=en&apiKey=${API_KEY}`, {
-            cache: "no-store" // Ensure fresh content is fetched
-        });
-
-        if (!res.ok) {
-            throw new Error(`Error: ${res.status} - ${res.statusText}`);
-        }
-        
-        const data = await res.json();
-        
-        if (data.articles && data.articles.length > 0) {
-            displayLatestUpdatedNews(data.articles);
-        } else {
-            console.warn("No latest articles found.");
-        }
-    } catch (error) {
-        console.error("Failed to fetch latest updated news:", error);
-        alert("Unable to fetch latest updated news. Please try again later.");
-    }
-}
-
-// Display the latest updated news articles
-function displayLatestUpdatedNews(articles) {
-    const latestUpdatedContainer = document.getElementById("latest-updated-container");
-    latestUpdatedContainer.innerHTML = ""; // Clear existing content
-
-    articles.forEach(article => {
-        const latestNewsItem = document.createElement("div");
-        latestNewsItem.classList.add("latest-news-item");
-        latestNewsItem.innerHTML = `
-            <h3>${article.title}</h3>
-            <p>${article.description}</p>
-            <p>Source: ${article.source.name} | Published: ${new Date(article.publishedAt).toLocaleString()}</p>
-        `;
-        
-        latestNewsItem.addEventListener("click", () => {
-            window.open(article.url, "_blank");
-        });
-        
-        latestUpdatedContainer.appendChild(latestNewsItem);
-    });
 }
 
 // Bind data to the template and display it
