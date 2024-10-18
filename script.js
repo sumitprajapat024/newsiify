@@ -74,8 +74,8 @@ function fillDataInCard(cardClone, article) {
     newsTitle.innerHTML = article.title;
     newsDesc.innerHTML = article.description;
 
-    const date = new Date(article.publishedAt).toLocaleString("en-US", {
-        timeZone: "Asia/Jakarta",
+    const date = new Date(article.publishedAt).toLocaleString("en-GB", {
+        timeZone: "Asia/Kolkata",
     });
 
     newsSource.innerHTML = `${article.source.name} · ${date}`;
@@ -144,3 +144,4 @@ document.getElementById('darkModeToggle').addEventListener('click', () => {
     icon.classList.toggle('fa-sun');
     icon.classList.toggle('fa-moon');
 });
+
